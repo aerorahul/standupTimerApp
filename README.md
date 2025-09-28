@@ -1,2 +1,2 @@
 # standupTimerApp
-Simple App for a StandupTimer
+Simple StandupTimer App

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standup Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Standup Timer</h1>
+
+        <div id="setup-section">
+            <div class="form-group">
+                <label for="meeting-length">Meeting Length (minutes):</label>
+                <input type="number" id="meeting-length" min="1" value="15">
+            </div>
+            <div class="form-group">
+                <label for="num-participants">Number of Participants:</label>
+                <input type="number" id="num-participants" min="1" value="5">
+            </div>
+            <div id="participant-names-container"></div>
+            <button id="start-btn">Start Standup</button>
+        </div>
+
+        <div id="timer-section" style="display: none;">
+            <div id="timer-display">03:00</div>
+            <div class="speaker-info">
+                <p><strong>Now Speaking:</strong> <span id="current-speaker"></span></p>
+                <p><strong>Up Next:</strong> <span id="next-speaker"></span></p>
+            </div>
+            <div id="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+            <div class="controls">
+                <button id="pause-resume-btn">Pause</button>
+                <button id="next-btn">Next</button>
+                <button id="reset-btn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
