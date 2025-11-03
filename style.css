@@ -113,7 +113,6 @@ button:hover {
 
 #next-btn.overtime-active {
     background-color: #ff6b6b;
-    /* animation: pulse 1.5s infinite; */
 }
 
 #next-btn.overtime-active:hover {
