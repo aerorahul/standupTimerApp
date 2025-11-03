@@ -65,6 +65,11 @@ button:hover {
     font-weight: bold;
     color: #333;
     margin: 20px 0;
+    transition: color 0.3s ease;
+}
+
+#timer-display.overtime {
+    color: #dc3545;
 }
 
 .speaker-info {
@@ -106,10 +111,106 @@ button:hover {
     background-color: #218838;
 }
 
+#next-btn.overtime-active {
+    background-color: #ff6b6b;
+}
+
+#next-btn.overtime-active:hover {
+    background-color: #ff5252;
+}
+
 #reset-btn {
     background-color: #dc3545;
 }
 
 #reset-btn:hover {
     background-color: #c82333;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-content h2 {
+    color: #dc3545;
+    margin: 0 0 20px 0;
+    font-size: 28px;
+}
+
+.modal-content p {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
+
+#modal-countdown {
+    font-size: 16px;
+    color: #666;
+    font-style: italic;
+    margin: 20px 0;
+}
+
+#countdown-seconds {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.overtime-btn {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.overtime-btn:hover {
+    background-color: #ffb300;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.next-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.next-btn:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.getElementById('next-btn'); // New button
     const resetBtn = document.getElementById('reset-btn');
 
+    // Modal elements
+    const overtimeModal = document.getElementById('overtime-modal');
+    const modalMessage = document.getElementById('modal-message');
+    const modalCountdownSeconds = document.getElementById('countdown-seconds');
+    const modalOvertimeBtn = document.getElementById('modal-overtime-btn');
+    const modalNextBtn = document.getElementById('modal-next-btn');
+
     // State variables
     let timer;
     let participants = [];
@@ -23,6 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSpeakerTimeLeft;
     let currentParticipantIndex = 0;
     let isPaused = false;
+    let allowOvertime = false;
+    let isInOvertime = false;
+    let overtimeSeconds = 0;
+    let modalCountdownTimer = null;
+    let modalCountdown = 5;
 
     // Dynamically create participant name inputs
     numParticipantsInput.addEventListener('input', () => {
@@ -44,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const meetingLength = parseInt(meetingLengthInput.value);
         const nameInputs = document.querySelectorAll('.participant-name');
         participants = Array.from(nameInputs).map(input => input.value.trim() || `Participant ${participants.length + 1}`);
+        allowOvertime = document.getElementById('allow-overtime').checked;
 
         if (meetingLength > 0 && participants.length > 0) {
             // Calculate time per person
@@ -74,9 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
         timerSection.style.display = 'none';
         setupSection.style.display = 'block';
         isPaused = false;
+        isInOvertime = false;
+        overtimeSeconds = 0;
         pauseResumeBtn.textContent = 'Pause';
         currentParticipantIndex = 0;
         progressBar.style.width = '0%';
+        timerDisplay.classList.remove('overtime');
+        nextBtn.classList.remove('overtime-active');
+        resetBtn.style.display = 'inline-block'; // Ensure reset button is visible
     });
 
     function startTimer() {
@@ -87,17 +105,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
         timer = setInterval(() => {
             if (!isPaused) {
-                currentSpeakerTimeLeft--;
-                updateTimerDisplay();
-                if (currentSpeakerTimeLeft <= 0) {
-                    goToNextSpeaker();
+                if (isInOvertime) {
+                    // In overtime mode, count up
+                    overtimeSeconds++;
+                    updateTimerDisplay();
+                } else {
+                    // Normal countdown
+                    currentSpeakerTimeLeft--;
+                    updateTimerDisplay();
+                    if (currentSpeakerTimeLeft <= 0) {
+                        handleTimeExpired();
+                    }
                 }
             }
         }, 1000);
     }
 
+    function handleTimeExpired() {
+        if (allowOvertime) {
+            // Pause and show modal
+            isPaused = true;
+            pauseResumeBtn.textContent = 'Resume';
+            showOvertimeModal();
+        } else {
+            // No overtime allowed, move to next speaker
+            goToNextSpeaker();
+        }
+    }
+
+    function showOvertimeModal() {
+        modalCountdown = 5;
+        modalMessage.textContent = `Time's up for ${participants[currentParticipantIndex]}!`;
+        modalCountdownSeconds.textContent = modalCountdown;
+        overtimeModal.style.display = 'flex';
+
+        // Start countdown
+        modalCountdownTimer = setInterval(() => {
+            modalCountdown--;
+            modalCountdownSeconds.textContent = modalCountdown;
+
+            if (modalCountdown <= 0) {
+                // Auto-advance to next speaker
+                closeOvertimeModal();
+                isPaused = false;
+                pauseResumeBtn.textContent = 'Pause';
+                goToNextSpeaker();
+            }
+        }, 1000);
+    }
+
+    function closeOvertimeModal() {
+        if (modalCountdownTimer) {
+            clearInterval(modalCountdownTimer);
+            modalCountdownTimer = null;
+        }
+        overtimeModal.style.display = 'none';
+    }
+
+    // Modal button handlers
+    modalOvertimeBtn.addEventListener('click', () => {
+        closeOvertimeModal();
+        // User chose overtime
+        isInOvertime = true;
+        overtimeSeconds = 0;
+        timerDisplay.classList.add('overtime');
+        nextBtn.classList.add('overtime-active');
+        resetBtn.style.display = 'none'; // Hide reset button in overtime
+        isPaused = false;
+        pauseResumeBtn.textContent = 'Pause';
+    });
+
+    modalNextBtn.addEventListener('click', () => {
+        closeOvertimeModal();
+        // User chose to move to next speaker
+        isPaused = false;
+        pauseResumeBtn.textContent = 'Pause';
+        goToNextSpeaker();
+    });
+
     function goToNextSpeaker() {
         currentParticipantIndex++;
+        isInOvertime = false;
+        overtimeSeconds = 0;
+        timerDisplay.classList.remove('overtime');
+        nextBtn.classList.remove('overtime-active');
+        resetBtn.style.display = 'inline-block'; // Show reset button when leaving overtime
+
         if (currentParticipantIndex >= participants.length) {
             clearInterval(timer);
             alert("Standup Over!");
@@ -112,9 +205,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTimerDisplay() {
-        const minutes = Math.floor(currentSpeakerTimeLeft / 60);
-        const seconds = currentSpeakerTimeLeft % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        if (isInOvertime) {
+            // Show overtime with + sign
+            const minutes = Math.floor(overtimeSeconds / 60);
+            const seconds = overtimeSeconds % 60;
+            timerDisplay.textContent = `+${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        } else {
+            // Normal countdown
+            const minutes = Math.floor(currentSpeakerTimeLeft / 60);
+            const seconds = currentSpeakerTimeLeft % 60;
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
     }
 
     function updateSpeakerInfo() {

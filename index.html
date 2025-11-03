@@ -32,6 +32,12 @@
                 <label for="participant-names">Participant Names:</label>
                 <div id="participant-names-container"></div>
             </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="allow-overtime">
+                    Allow overtime (prompt before moving to next speaker)
+                </label>
+            </div>
             <button id="start-btn">Start Standup</button>
         </div>
 
@@ -48,6 +54,19 @@
                 <button id="pause-resume-btn">Pause</button>
                 <button id="next-btn">Next</button>
                 <button id="reset-btn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overtime Modal -->
+    <div id="overtime-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Time's Up!</h2>
+            <p id="modal-message"></p>
+            <p id="modal-countdown">Auto-advancing in <span id="countdown-seconds">5</span> seconds...</p>
+            <div class="modal-buttons">
+                <button id="modal-overtime-btn" class="modal-btn overtime-btn">Allow Overtime</button>
+                <button id="modal-next-btn" class="modal-btn next-btn">Next Speaker</button>
             </div>
         </div>
     </div>
