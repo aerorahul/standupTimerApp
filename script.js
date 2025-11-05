@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerDisplay = document.getElementById('timer-display');
     const currentSpeakerSpan = document.getElementById('current-speaker');
     const nextSpeakerSpan = document.getElementById('next-speaker');
+    const nextSpeakerLine = document.getElementById('next-speaker-line');
     const progressBar = document.getElementById('progress-bar');
     const pauseResumeBtn = document.getElementById('pause-resume-btn');
     const nextBtn = document.getElementById('next-btn'); // New button
@@ -22,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCountdownSeconds = document.getElementById('countdown-seconds');
     const modalOvertimeBtn = document.getElementById('modal-overtime-btn');
     const modalNextBtn = document.getElementById('modal-next-btn');
+
+    // Startup modal elements
+    const startupModal = document.getElementById('startup-modal');
+    const startupSpeakerName = document.getElementById('startup-speaker-name');
+    const startupCountdownDisplay = document.getElementById('startup-countdown-display');
 
     // State variables
     let timer;
@@ -35,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let overtimeSeconds = 0;
     let modalCountdownTimer = null;
     let modalCountdown = 5;
+    let startupCountdown = 0;
+    let isStartupCountdown = false;
 
     // Dynamically create participant name inputs
     numParticipantsInput.addEventListener('input', () => {
@@ -66,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shuffleArray(participants);
             setupSection.style.display = 'none';
             timerSection.style.display = 'block';
-            startTimer();
+            startCountdown();
         }
     });
 
@@ -88,23 +96,45 @@ document.addEventListener('DOMContentLoaded', () => {
         setupSection.style.display = 'block';
         isPaused = false;
         isInOvertime = false;
+        isStartupCountdown = false;
         overtimeSeconds = 0;
+        startupCountdown = 0;
         pauseResumeBtn.textContent = 'Pause';
         currentParticipantIndex = 0;
         progressBar.style.width = '0%';
         timerDisplay.classList.remove('overtime');
         nextBtn.classList.remove('overtime-active');
         resetBtn.style.display = 'inline-block'; // Ensure reset button is visible
+        startupModal.style.display = 'none'; // Hide startup modal if visible
     });
 
-    function startTimer() {
+    function startCountdown() {
+        startupCountdown = 3;
+        isStartupCountdown = true;
         currentParticipantIndex = 0;
         updateSpeakerInfo();
         updateProgressBar();
-        updateTimerDisplay();
+
+        // Show startup modal with speaker name and countdown
+        startupSpeakerName.textContent = participants[currentParticipantIndex];
+        startupCountdownDisplay.textContent = startupCountdown;
+        startupModal.style.display = 'flex';
 
         timer = setInterval(() => {
-            if (!isPaused) {
+            if (isStartupCountdown) {
+                startupCountdown--;
+                if (startupCountdown > 0) {
+                    startupCountdownDisplay.textContent = startupCountdown;
+                } else {
+                    startupCountdownDisplay.textContent = "GO!";
+                    // Close modal after showing "GO!" for half a second
+                    setTimeout(() => {
+                        startupModal.style.display = 'none';
+                        isStartupCountdown = false;
+                        startTimer();
+                    }, 500);
+                }
+            } else if (!isPaused) {
                 if (isInOvertime) {
                     // In overtime mode, count up
                     overtimeSeconds++;
@@ -119,6 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }, 1000);
+    }
+
+    function startTimer() {
+        updateTimerDisplay();
     }
 
     function handleTimeExpired() {
@@ -220,7 +254,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateSpeakerInfo() {
         currentSpeakerSpan.textContent = participants[currentParticipantIndex];
-        nextSpeakerSpan.textContent = participants[currentParticipantIndex + 1] || 'None';
+        const nextParticipant = participants[currentParticipantIndex + 1];
+
+        if (nextParticipant) {
+            nextSpeakerSpan.textContent = nextParticipant;
+            nextSpeakerLine.style.visibility = 'visible';
+        } else {
+            nextSpeakerLine.style.visibility = 'hidden';
+        }
     }
 
     function updateProgressBar() {
