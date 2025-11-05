@@ -7,7 +7,8 @@
     <title>Customizable Standup Timer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<!-- Google tag (gtag.js) -->
+
+<!-- Google Analytics tracking code -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-02J51VNVCE"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,41 +16,62 @@
   gtag('js', new Date());
   gtag('config', 'G-02J51VNVCE');
 </script>
+
 <body>
+    <!-- Main container for the entire application -->
     <div class="container">
         <h1>Standup Timer</h1>
 
+        <!-- Setup Section: Initial configuration before starting the timer -->
         <div id="setup-section">
+            <!-- Meeting length input -->
             <div class="form-group">
                 <label for="meeting-length">Meeting Length (minutes):</label>
                 <input type="number" id="meeting-length" min="1" value="15">
             </div>
+
+            <!-- Number of participants input -->
             <div class="form-group">
                 <label for="num-participants">Number of Participants:</label>
                 <input type="number" id="num-participants" min="1" value="5">
             </div>
+
+            <!-- Dynamic participant names container (populated by JavaScript) -->
             <div class="form-group">
                 <label for="participant-names">Participant Names:</label>
                 <div id="participant-names-container"></div>
             </div>
+
+            <!-- Overtime option checkbox -->
             <div class="form-group">
                 <label>
                     <input type="checkbox" id="allow-overtime">
                     Allow overtime (prompt before moving to next speaker)
                 </label>
             </div>
+
+            <!-- Start button to begin the standup -->
             <button id="start-btn">Start Standup</button>
         </div>
 
+        <!-- Timer Section: Active timer display (hidden by default) -->
         <div id="timer-section" style="display: none;">
+            <!-- Main timer display showing countdown/overtime -->
             <div id="timer-display">03:00</div>
+
+            <!-- Speaker information section -->
             <div class="speaker-info">
                 <p><strong>Now Speaking:</strong> <span id="current-speaker"></span></p>
+                <!-- Next speaker line (hidden when on last speaker) -->
                 <p id="next-speaker-line"><strong>Up Next:</strong> <span id="next-speaker"></span></p>
             </div>
+
+            <!-- Progress bar showing overall standup progress -->
             <div id="progress-bar-container">
                 <div id="progress-bar"></div>
             </div>
+
+            <!-- Control buttons for timer management -->
             <div class="controls">
                 <button id="pause-resume-btn">Pause</button>
                 <button id="next-btn">Next</button>
@@ -58,12 +80,15 @@
         </div>
     </div>
 
-    <!-- Overtime Modal -->
+    <!-- Overtime Modal: Appears when speaker's time expires and overtime is enabled -->
     <div id="overtime-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <h2>Time's Up!</h2>
+            <!-- Dynamic message showing which speaker's time is up -->
             <p id="modal-message"></p>
+            <!-- Auto-advance countdown display -->
             <p id="modal-countdown">Auto-advancing in <span id="countdown-seconds">5</span> seconds...</p>
+            <!-- Action buttons for overtime decision -->
             <div class="modal-buttons">
                 <button id="modal-overtime-btn" class="modal-btn overtime-btn">Allow Overtime</button>
                 <button id="modal-next-btn" class="modal-btn next-btn">Next Speaker</button>
@@ -71,15 +96,18 @@
         </div>
     </div>
 
-    <!-- Startup Countdown Modal -->
+    <!-- Startup Countdown Modal: 3-second countdown before first speaker begins -->
     <div id="startup-modal" class="modal" style="display: none;">
         <div class="modal-content startup-modal-content">
+            <!-- Dynamic speaker name display -->
             <h2 id="startup-speaker-name"></h2>
             <p>Get ready to speak!</p>
+            <!-- Countdown display (3, 2, 1, GO!) -->
             <div id="startup-countdown-display">3</div>
         </div>
     </div>
 
+    <!-- JavaScript functionality -->
     <script src="script.js"></script>
 </body>
 </html>

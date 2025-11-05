@@ -1,3 +1,20 @@
+/*
+ * Standup Timer Application Styles
+ *
+ * This CSS file contains all styling for a customizable standup timer application.
+ * The application includes setup forms, timer display, progress tracking, and modal dialogs.
+ *
+ * Main Features:
+ * - Responsive design with centered layout
+ * - Modern button and form styling
+ * - Large, readable timer display with color changes
+ * - Modal dialogs for overtime and startup countdown
+ * - Smooth transitions and hover effects
+ */
+
+/* ===== GLOBAL STYLES ===== */
+
+/* Main body styling with centered flex layout */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: #f0f2f5;
@@ -8,6 +25,7 @@ body {
     margin: 0;
 }
 
+/* Main container with card-like appearance */
 .container {
     background-color: #ffffff;
     padding: 40px;
@@ -18,16 +36,21 @@ body {
     max-width: 500px;
 }
 
+/* Main heading styling */
 h1 {
     color: #333;
     margin-bottom: 30px;
 }
 
+/* ===== FORM ELEMENTS ===== */
+
+/* Form group container for consistent spacing */
 .form-group {
     margin-bottom: 20px;
     text-align: left;
 }
 
+/* Label styling for form inputs */
 label {
     display: block;
     margin-bottom: 8px;
@@ -35,6 +58,7 @@ label {
     font-weight: bold;
 }
 
+/* Input field styling for numbers and text */
 input[type="number"],
 input[type="text"] {
     width: 100%;
@@ -45,6 +69,9 @@ input[type="text"] {
     margin-bottom: 1px;
 }
 
+/* ===== BUTTON STYLES ===== */
+
+/* Default button styling */
 button {
     background-color: #007bff;
     color: white;
@@ -56,10 +83,14 @@ button {
     transition: background-color 0.3s;
 }
 
+/* Button hover effect */
 button:hover {
     background-color: #0056b3;
 }
 
+/* ===== TIMER DISPLAY ===== */
+
+/* Large timer display with smooth color transitions */
 #timer-display {
     font-size: 72px;
     font-weight: bold;
@@ -68,22 +99,30 @@ button:hover {
     transition: color 0.3s ease;
 }
 
+/* Red color for overtime mode */
 #timer-display.overtime {
     color: #dc3545;
 }
 
+/* ===== SPEAKER INFORMATION ===== */
+
+/* Speaker info container with consistent height to prevent layout shifts */
 .speaker-info {
     font-size: 18px;
     color: #555;
     margin-bottom: 20px;
-    min-height: 60px;
+    min-height: 60px; /* Maintains height when "Up Next" is hidden */
 }
 
+/* Speaker info paragraph styling */
 .speaker-info p {
     margin: 5px 0;
     line-height: 1.4;
 }
 
+/* ===== PROGRESS BAR ===== */
+
+/* Progress bar container */
 #progress-bar-container {
     width: 100%;
     background-color: #e0e0e0;
@@ -92,6 +131,7 @@ button:hover {
     margin-bottom: 20px;
 }
 
+/* Progress bar fill with smooth width transitions */
 #progress-bar {
     width: 100%;
     height: 20px;
@@ -99,6 +139,9 @@ button:hover {
     transition: width 0.5s;
 }
 
+/* ===== CONTROL BUTTONS ===== */
+
+/* Control button base styling */
 .controls button {
     margin: 0 10px;
     background-color: #6c757d;
@@ -108,7 +151,7 @@ button:hover {
     background-color: #5a6268;
 }
 
-/* Style for the new "Next" button */
+/* Next button - green for positive action */
 #next-btn {
     background-color: #28a745;
 }
@@ -117,6 +160,7 @@ button:hover {
     background-color: #218838;
 }
 
+/* Next button in overtime mode - red/coral for urgency */
 #next-btn.overtime-active {
     background-color: #ff6b6b;
 }
@@ -125,6 +169,7 @@ button:hover {
     background-color: #ff5252;
 }
 
+/* Reset button - red for destructive action */
 #reset-btn {
     background-color: #dc3545;
 }
@@ -133,7 +178,9 @@ button:hover {
     background-color: #c82333;
 }
 
-/* Modal styles */
+/* ===== MODAL DIALOGS ===== */
+
+/* Modal overlay covering entire screen */
 .modal {
     display: none;
     position: fixed;
@@ -147,6 +194,7 @@ button:hover {
     z-index: 1000;
 }
 
+/* Modal content container */
 .modal-content {
     background-color: white;
     padding: 40px;
@@ -157,18 +205,21 @@ button:hover {
     width: 90%;
 }
 
+/* Modal heading styling */
 .modal-content h2 {
     color: #dc3545;
     margin: 0 0 20px 0;
     font-size: 28px;
 }
 
+/* Modal paragraph text */
 .modal-content p {
     font-size: 18px;
     color: #333;
     margin: 10px 0;
 }
 
+/* Auto-advance countdown text in overtime modal */
 #modal-countdown {
     font-size: 16px;
     color: #666;
@@ -176,11 +227,13 @@ button:hover {
     margin: 20px 0;
 }
 
+/* Highlighted countdown seconds */
 #countdown-seconds {
     font-weight: bold;
     color: #dc3545;
 }
 
+/* Modal button container */
 .modal-buttons {
     display: flex;
     gap: 15px;
@@ -188,6 +241,7 @@ button:hover {
     justify-content: center;
 }
 
+/* Modal button base styling */
 .modal-btn {
     flex: 1;
     padding: 15px 20px;
@@ -199,6 +253,7 @@ button:hover {
     transition: all 0.3s;
 }
 
+/* Overtime allow button - yellow/amber for caution */
 .overtime-btn {
     background-color: #ffc107;
     color: #000;
@@ -210,6 +265,7 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Next speaker button - green for positive action */
 .next-btn {
     background-color: #28a745;
     color: white;
@@ -221,7 +277,9 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Startup Modal styles */
+/* ===== STARTUP MODAL ===== */
+
+/* Startup modal with blue theme and border */
 .startup-modal-content {
     background-color: #f8f9fa;
     border: 3px solid #007bff;
@@ -230,6 +288,7 @@ button:hover {
     width: 90%;
 }
 
+/* Startup modal heading - blue theme */
 .startup-modal-content h2 {
     color: #007bff;
     margin: 0 0 20px 0;
@@ -237,6 +296,7 @@ button:hover {
     font-weight: bold;
 }
 
+/* Large countdown display for startup (3, 2, 1, GO!) */
 #startup-countdown-display {
     font-size: 72px;
     font-weight: bold;
@@ -245,6 +305,7 @@ button:hover {
     line-height: 1;
 }
 
+/* Startup modal instruction text */
 .startup-modal-content p {
     font-size: 18px;
     color: #666;
