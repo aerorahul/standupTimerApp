@@ -27,7 +27,7 @@ A customizable timer application for managing standup meetings with features lik
 ## Usage
 
 1. **Setup**: Enter meeting length and number of participants
-2. **Customize**: Add participant names (optional - defaults to "Person 1", "Person 2", etc.)
+2. **Customize**: Add participant names (optional - defaults to "Participant 1", "Participant 2", etc.)
 3. **Options**: Enable overtime if desired
 4. **Start**: Click "Start Standup" to begin the timer
 5. **Control**: Use Pause/Resume, Next, or Reset buttons as needed
@@ -43,7 +43,7 @@ A customizable timer application for managing standup meetings with features lik
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/aerorahul/standupTimerApp
    cd standupTimerApp
    ```
 
@@ -98,7 +98,7 @@ The project uses GitHub Actions for continuous integration:
 ## File Structure
 
 ```
-├── src/
+├── docs/
 │   ├── index.html          # Main application interface
 │   ├── script.js           # Core application logic
 │   └── style.css           # Styling and animations
@@ -131,4 +131,4 @@ The project uses GitHub Actions for continuous integration:
 
 ## License
 
-MIT License - see LICENSE.md for details
+CC0 License - see LICENSE.md for details
