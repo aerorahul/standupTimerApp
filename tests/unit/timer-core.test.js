@@ -11,7 +11,7 @@ const {
     hasNextParticipant,
     getNextParticipant,
     TimerState
-} = require('./timer-core');
+} = require('../utils/timer-core');
 
 describe('Standup Timer Core Functions', () => {
 

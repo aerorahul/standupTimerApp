@@ -15,7 +15,7 @@ const {
     hasNextParticipant,
     getNextParticipant,
     TimerState
-} = require('./tests/timer-core');
+} = require('../utils/timer-core');
 
 // Simple test function
 function test(description, testFn) {
