@@ -1,0 +1,29 @@
+{
+  "name": "standup-timer-app",
+  "version": "1.0.0",
+  "description": "A customizable timer application for managing standup meetings",
+  "main": "script.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:simple": "node test-simple.js"
+  },
+  "keywords": ["timer", "standup", "scrum", "meeting"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "@testing-library/jest-dom": "^6.1.4"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "testMatch": ["<rootDir>/tests/**/*.test.js"],
+    "collectCoverageFrom": [
+      "script.js",
+      "!node_modules/**"
+    ]
+  }
+}
