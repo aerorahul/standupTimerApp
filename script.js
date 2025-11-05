@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerDisplay = document.getElementById('timer-display');
     const currentSpeakerSpan = document.getElementById('current-speaker');
     const nextSpeakerSpan = document.getElementById('next-speaker');
+    const nextSpeakerLine = document.getElementById('next-speaker-line');
     const progressBar = document.getElementById('progress-bar');
     const pauseResumeBtn = document.getElementById('pause-resume-btn');
     const nextBtn = document.getElementById('next-btn'); // New button
@@ -253,7 +254,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateSpeakerInfo() {
         currentSpeakerSpan.textContent = participants[currentParticipantIndex];
-        nextSpeakerSpan.textContent = participants[currentParticipantIndex + 1] || 'None';
+        const nextParticipant = participants[currentParticipantIndex + 1];
+
+        if (nextParticipant) {
+            nextSpeakerSpan.textContent = nextParticipant;
+            nextSpeakerLine.style.visibility = 'visible';
+        } else {
+            nextSpeakerLine.style.visibility = 'hidden';
+        }
     }
 
     function updateProgressBar() {
