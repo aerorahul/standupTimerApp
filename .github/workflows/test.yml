@@ -14,6 +14,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Debug - List files
+      run: |
+        echo "Repository contents:"
+        ls -la
+        echo "Package.json exists:"
+        ls -la package.json || echo "package.json not found"
+        echo "Tests directory:"
+        ls -la tests/ || echo "tests directory not found"
+
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:

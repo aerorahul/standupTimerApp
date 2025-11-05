@@ -86,4 +86,22 @@ global.createMockDOM = () => {
       </div>
     </div>
   `;
+
+  // Add mock logic for participant input generation
+  const numParticipantsInput = document.getElementById('num-participants');
+  const container = document.getElementById('participant-names-container');
+
+  numParticipantsInput.addEventListener('input', function() {
+    const numParticipants = parseInt(this.value) || 0;
+    container.innerHTML = '';
+
+    for (let i = 1; i <= numParticipants; i++) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'participant-name';
+      input.placeholder = `Participant ${i} Name`;
+      input.id = `participant-${i}`;
+      container.appendChild(input);
+    }
+  });
 };

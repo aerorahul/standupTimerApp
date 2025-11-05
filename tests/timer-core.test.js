@@ -239,7 +239,7 @@ describe('TimerState', () => {
     describe('timer operations', () => {
         beforeEach(() => {
             timerState.setParticipants(['Alice', 'Bob']);
-            timerState.setTimePerPerson(2); // 2 minutes = 120 seconds
+            timerState.setTimePerPerson(4); // 4 minutes total = 2 minutes per person = 120 seconds
         });
 
         it('should tick down normally', () => {
@@ -298,7 +298,7 @@ describe('TimerState', () => {
     describe('speaker transitions', () => {
         beforeEach(() => {
             timerState.setParticipants(['Alice', 'Bob', 'Charlie']);
-            timerState.setTimePerPerson(1); // 60 seconds
+            timerState.setTimePerPerson(3); // 3 minutes total = 1 minute per person = 60 seconds
         });
 
         it('should advance to next speaker', () => {

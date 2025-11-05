@@ -5,17 +5,17 @@
 
 console.log('🧪 Running Standup Timer Tests...\n');
 
-// Load the timer core functions
-const fs = require('fs');
-const path = require('path');
-
-// Read and evaluate the timer-core.js file
-const timerCorePath = path.join(__dirname, 'tests', 'timer-core.js');
-const timerCoreCode = fs.readFileSync(timerCorePath, 'utf8');
-
-// Remove the browser-specific export and evaluate
-const coreCode = timerCoreCode.replace(/if \(typeof window[\s\S]*?}/, '');
-eval(coreCode);
+// Load the timer core functions using require
+const {
+    shuffleArray,
+    calculateTimePerPerson,
+    formatTime,
+    calculateProgress,
+    validateParticipantNames,
+    hasNextParticipant,
+    getNextParticipant,
+    TimerState
+} = require('./tests/timer-core');
 
 // Simple test function
 function test(description, testFn) {
