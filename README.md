@@ -18,10 +18,10 @@ A customizable timer application for managing standup meetings with features lik
 ## Screenshots
 
 <p>
-    <img src="configure_standup.png" alt="Configure Standup Timer" width="300px" style="vertical-align:top; margin-right: 20px;" />
+    <img src="assets/configure_standup.png" alt="Configure Standup Timer" width="300px" style="vertical-align:top; margin-right: 20px;" />
     <br>
     <br>
-    <img src="run_timer.png" alt="Control Standup Timer Running" width="300px" style="vertical-align:top; margin-right: 20px;" />
+    <img src="assets/run_timer.png" alt="Control Standup Timer Running" width="300px" style="vertical-align:top; margin-right: 20px;" />
 </p>
 
 ## Usage
@@ -57,6 +57,9 @@ A customizable timer application for managing standup meetings with features lik
 The project includes a comprehensive test suite using Jest:
 
 ```bash
+# Navigate to config directory first
+cd config
+
 # Run all tests
 npm test
 
@@ -65,15 +68,18 @@ npm run test:watch
 
 # Run tests with coverage report
 npm run test:coverage
+
+# Run lightweight Node.js tests
+npm run test:simple
 ```
 
 **Browser Testing (No Node.js required):**
-- Open `test-runner.html` in any modern browser
+- Open `tests/runners/test-runner.html` in any modern browser
 - Tests run automatically and show immediate results with visual feedback
 
 **Quick File Check:**
 ```bash
-./check-tests.sh    # Verify all test files are ready
+./tests/runners/check-tests.sh    # Verify all test files are ready
 ```
 
 ### Test Structure
@@ -92,18 +98,29 @@ The project uses GitHub Actions for continuous integration:
 ## File Structure
 
 ```
-├── index.html          # Main application interface
-├── script.js           # Core application logic
-├── style.css           # Styling and animations
-├── test-runner.html    # Browser-based test runner
-├── package.json        # Dependencies and scripts
+├── src/
+│   ├── index.html          # Main application interface
+│   ├── script.js           # Core application logic
+│   └── style.css           # Styling and animations
+├── assets/
+│   ├── configure_standup.png  # Setup screenshot
+│   └── run_timer.png          # Timer screenshot
 ├── tests/
-│   ├── setup.js        # Test configuration
-│   ├── timer-core.js   # Extracted testable functions
-│   ├── timer-core.test.js     # Unit tests
-│   └── dom-integration.test.js # DOM tests
+│   ├── unit/
+│   │   ├── timer-core.test.js     # Unit tests
+│   │   └── dom-integration.test.js # DOM tests
+│   ├── utils/
+│   │   ├── setup.js               # Test configuration
+│   │   └── timer-core.js          # Extracted testable functions
+│   └── runners/
+│       ├── test-runner.html       # Browser test runner
+│       ├── test-simple.js         # Lightweight Node tests
+│       └── check-tests.sh         # Test verification script
+├── config/
+│   ├── package.json        # Dependencies and scripts
+│   └── package-lock.json   # Dependency lock file
 └── .github/workflows/
-    └── test.yml        # GitHub Actions CI
+    └── test.yml            # GitHub Actions CI
 ```
 
 ## Browser Support
