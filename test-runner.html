@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standup Timer - Test Runner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .pass {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+        .fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+        .loading {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+        .summary {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        #debug {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Standup Timer - Test Runner</h1>
+    <p>Testing core functionality without Node.js/Jest dependencies.</p>
+
+    <div id="debug">
+        <strong>Loading Status:</strong><br>
+        <span id="loading-status">Initializing...</span>
+    </div>
+
+    <div class="test-container">
+        <h2>Core Function Tests</h2>
+        <div id="core-tests">
+            <div class="test-result loading">⏳ Loading tests...</div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>Timer State Tests</h2>
+        <div id="state-tests">
+            <div class="test-result loading">⏳ Loading tests...</div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>Test Summary</h2>
+        <div id="summary">
+            <div class="test-result info">🔄 Tests will run automatically when ready...</div>
+        </div>
+    </div>
+
+    <!-- Load the extracted timer core functions -->
+    <script src="tests/timer-core.js"></script>
+
+    <script>
+        // Update loading status
+        function updateStatus(message) {
+            document.getElementById('loading-status').innerHTML = message;
+        }
+
+        updateStatus('timer-core.js loaded');
+
+        // Check what's available
+        updateStatus(`
+            timer-core.js loaded<br>
+            window.StandupTimer: ${typeof window.StandupTimer}<br>
+            Available functions: ${window.StandupTimer ? Object.keys(window.StandupTimer).join(', ') : 'none'}
+        `);
+
+        // Simple test runner with better error handling
+        function runTest(name, testFn) {
+            try {
+                testFn();
+                return { name, passed: true, error: null };
+            } catch (error) {
+                return { name, passed: false, error: error.message };
+            }
+        }
+
+        function expect(actual) {
+            return {
+                toBe: (expected) => {
+                    if (actual !== expected) {
+                        throw new Error(`Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+                    }
+                },
+                toEqual: (expected) => {
+                    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+                        throw new Error(`Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+                    }
+                },
+                toContain: (expected) => {
+                    if (!actual.includes(expected)) {
+                        throw new Error(`Expected ${JSON.stringify(actual)} to contain ${JSON.stringify(expected)}`);
+                    }
+                }
+            };
+        }
+
+        function displayResults(containerId, results) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.className = `test-result ${result.passed ? 'pass' : 'fail'}`;
+                div.innerHTML = `${result.passed ? '✅' : '❌'} ${result.name}`;
+                if (!result.passed) {
+                    div.innerHTML += `<br>&nbsp;&nbsp;&nbsp;&nbsp;Error: ${result.error}`;
+                }
+                container.appendChild(div);
+            });
+        }
+
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (!window.StandupTimer) {
+                    updateStatus('❌ ERROR: timer-core.js functions not available');
+                    document.getElementById('core-tests').innerHTML =
+                        '<div class="test-result fail">❌ timer-core.js not loaded properly</div>';
+                    document.getElementById('state-tests').innerHTML =
+                        '<div class="test-result fail">❌ TimerState class not available</div>';
+                    return;
+                }
+
+                updateStatus('✅ All functions loaded, running tests...');
+
+                const {
+                    shuffleArray,
+                    calculateTimePerPerson,
+                    formatTime,
+                    calculateProgress,
+                    validateParticipantNames,
+                    hasNextParticipant,
+                    getNextParticipant,
+                    TimerState
+                } = window.StandupTimer;
+
+                // Core function tests
+                const coreTests = [
+                    runTest('shuffleArray preserves array length', () => {
+                        const arr = [1, 2, 3, 4, 5];
+                        const shuffled = shuffleArray([...arr]);
+                        expect(shuffled.length).toBe(arr.length);
+                    }),
+
+                    runTest('calculateTimePerPerson works correctly', () => {
+                        expect(calculateTimePerPerson(15, 5)).toBe(180);
+                        expect(calculateTimePerPerson(10, 2)).toBe(300);
+                        expect(calculateTimePerPerson(0, 5)).toBe(0);
+                    }),
+
+                    runTest('formatTime formats correctly', () => {
+                        expect(formatTime(0)).toBe('0:00');
+                        expect(formatTime(65)).toBe('1:05');
+                        expect(formatTime(125)).toBe('2:05');
+                        expect(formatTime(65, true)).toBe('+1:05');
+                    }),
+
+                    runTest('calculateProgress calculates correctly', () => {
+                        expect(calculateProgress(2, 5)).toBe(40);
+                        expect(calculateProgress(0, 5)).toBe(0);
+                        expect(calculateProgress(5, 5)).toBe(100);
+                    }),
+
+                    runTest('validateParticipantNames validates and defaults', () => {
+                        const result = validateParticipantNames(['Alice', '', 'Bob']);
+                        expect(result).toEqual(['Alice', 'Participant 2', 'Bob']);
+                    }),
+
+                    runTest('hasNextParticipant works correctly', () => {
+                        const participants = ['Alice', 'Bob', 'Charlie'];
+                        expect(hasNextParticipant(0, participants)).toBe(true);
+                        expect(hasNextParticipant(2, participants)).toBe(false);
+                    }),
+
+                    runTest('getNextParticipant returns correct participant', () => {
+                        const participants = ['Alice', 'Bob', 'Charlie'];
+                        expect(getNextParticipant(0, participants)).toBe('Bob');
+                        expect(getNextParticipant(2, participants)).toBe(null);
+                    })
+                ];
+
+                // TimerState tests
+                const stateTests = [
+                    runTest('TimerState initializes correctly', () => {
+                        const timer = new TimerState();
+                        expect(timer.currentParticipantIndex).toBe(0);
+                        expect(timer.isPaused).toBe(false);
+                        expect(timer.isInOvertime).toBe(false);
+                    }),
+
+                    runTest('TimerState sets participants correctly', () => {
+                        const timer = new TimerState();
+                        timer.setParticipants(['Alice', '', 'Bob']);
+                        expect(timer.participants).toEqual(['Alice', 'Participant 2', 'Bob']);
+                    }),
+
+                    runTest('TimerState calculates time per person', () => {
+                        const timer = new TimerState();
+                        timer.setParticipants(['Alice', 'Bob', 'Charlie']);
+                        timer.setTimePerPerson(15);
+                        expect(timer.timePerPerson).toBe(300); // 15 * 60 / 3
+                    }),
+
+                    runTest('TimerState handles speaker navigation', () => {
+                        const timer = new TimerState();
+                        timer.setParticipants(['Alice', 'Bob', 'Charlie']);
+                        expect(timer.getCurrentSpeaker()).toBe('Alice');
+                        expect(timer.getNextSpeaker()).toBe('Bob');
+                        expect(timer.hasNextSpeaker()).toBe(true);
+                    }),
+
+                    runTest('TimerState advances to next speaker', () => {
+                        const timer = new TimerState();
+                        timer.setParticipants(['Alice', 'Bob']);
+                        timer.setTimePerPerson(10);
+                        const finished = timer.nextSpeaker();
+                        expect(finished).toBe(false);
+                        expect(timer.getCurrentSpeaker()).toBe('Bob');
+                    }),
+
+                    runTest('TimerState handles overtime', () => {
+                        const timer = new TimerState();
+                        timer.startOvertime();
+                        expect(timer.isInOvertime).toBe(true);
+                        timer.tick();
+                        expect(timer.overtimeSeconds).toBe(1);
+                    }),
+
+                    runTest('TimerState resets correctly', () => {
+                        const timer = new TimerState();
+                        timer.setParticipants(['Alice', 'Bob']);
+                        timer.setTimePerPerson(5);
+                        timer.nextSpeaker();
+                        timer.startOvertime();
+                        timer.reset();
+                        expect(timer.currentParticipantIndex).toBe(0);
+                        expect(timer.participants).toEqual([]);
+                        expect(timer.isInOvertime).toBe(false);
+                    })
+                ];
+
+                // Display results
+                displayResults('core-tests', coreTests);
+                displayResults('state-tests', stateTests);
+
+                // Summary
+                const allTests = [...coreTests, ...stateTests];
+                const passed = allTests.filter(t => t.passed).length;
+                const failed = allTests.filter(t => !t.passed).length;
+
+                const summaryContainer = document.getElementById('summary');
+                summaryContainer.innerHTML = `
+                    <div class="summary ${failed === 0 ? 'pass' : 'fail'}">
+                        📊 Test Results: ${passed} passed, ${failed} failed (${allTests.length} total)
+                    </div>
+                `;
+
+                if (failed > 0) {
+                    const failedTests = allTests.filter(t => !t.passed);
+                    const failureDetails = document.createElement('pre');
+                    failureDetails.textContent = 'Failed Tests:\n' +
+                        failedTests.map(f => `❌ ${f.name}: ${f.error}`).join('\n');
+                    summaryContainer.appendChild(failureDetails);
+                } else {
+                    const successMsg = document.createElement('div');
+                    successMsg.className = 'test-result pass';
+                    successMsg.innerHTML = '🎉 All tests passed! The Standup Timer core functionality is working correctly.';
+                    summaryContainer.appendChild(successMsg);
+                }
+
+                updateStatus('✅ Tests completed successfully');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
