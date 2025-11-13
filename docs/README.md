@@ -1,0 +1,1 @@
+This directory contains the website files since the project is deployed via GitHub Pages from the `docs/` folder.

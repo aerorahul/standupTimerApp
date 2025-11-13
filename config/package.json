@@ -15,8 +15,8 @@
     "scrum",
     "meeting"
   ],
-  "author": "Your Name",
-  "license": "MIT",
+  "author": "Rahul Mahajan",
+  "license": "CC0",
   "devDependencies": {
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",

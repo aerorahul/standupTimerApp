@@ -8,11 +8,11 @@ A customizable timer application for managing standup meetings with features lik
 - **Multiple Participants**: Support for any number of participants with custom names
 - **Equal Time Distribution**: Automatically calculates time per person
 - **Visual Indicators**:
-  - Timer turns red and flashes during the last 10 seconds
   - Progress bar shows meeting progress
   - Overtime mode with distinctive styling
+  - Shows overtime duration if enabled
 - **Overtime Management**: Optional overtime with automatic progression
-- **Speaker Transitions**: 3-second countdown before each speaker starts
+- **Speaker Transitions**: 3-second countdown for first speaker before standup starts
 - **Smart UI**: Hides irrelevant information (e.g., "Up Next" for the last speaker)
 
 ## Screenshots
@@ -82,6 +82,8 @@ npm run test:simple
 ./tests/runners/check-tests.sh    # Verify all test files are ready
 ```
 
+For more details, see [TESTING.md](./TESTING.md).
+
 ### Test Structure
 
 - **Unit Tests**: Core functionality testing (`tests/timer-core.test.js`)
@@ -131,4 +133,4 @@ The project uses GitHub Actions for continuous integration:
 
 ## License
 
-CC0 License - see LICENSE.md for details
+CC0 License - see [LICENSE.md](./LICENSE.md) for details
